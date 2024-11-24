@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beatbank Lite</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles-index.css') }}">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Beatbank Lite</h1>
+        <div id="initialUpload" class="initial-upload">
+            <form method="post" enctype="multipart/form-data" onsubmit="handleSubmit(event)">
+                <div class="upload-area">
+                    <input type="file" 
+                           id="file" 
+                           name="file" 
+                           class="file-input" 
+                           onchange="updateFileName(this)"
+                           accept=".mp3,.wav,.ogg,.m4a,.aac,.flac">
+                    <label for="file" id="fileLabel" class="file-label">Choose an audio file</label>
+                </div>
+                <button type="submit" class="submit-button">Analyze Beat</button>
+            </form>
+            {% if file_path %}
+            <div class="file-info">
+                <h2>Uploaded File:</h2>
+                <p>{{ file_path }}</p>
+            </div>
+            {% endif %}
+        </div>
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Analyzing tempo...</p>
+        </div>
+
+        <div id="result" class="result">
+            <h2>Tempo Detected:</h2>
+            <p>69 BPM</p>
+        </div>
+
+
+        <div id="analyzeAnother" class="analyze-another">
+            <h3>Would you like to analyze another beat?</h3>
+            <form method="post" enctype="multipart/form-data" onsubmit="handleSubmit(event)" class="compact-upload">
+                <div class="file-input-wrapper">
+                    <input type="file" 
+                           id="file2" 
+                           name="file" 
+                           class="file-input" 
+                           onchange="updateFileName2(this)"
+                           accept=".mp3,.wav,.ogg,.m4a,.aac,.flac">
+                    <label for="file2" id="fileLabel2" class="file-label">Choose an audio file</label>
+                </div>
+                <button type="submit" class="submit-button">Analyze</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function updateFileName(input) {
+            const label = document.getElementById('fileLabel');
+            label.textContent = input.files[0] ? input.files[0].name : 'Choose an audio file';
+        }
+
+        function updateFileName2(input) {
+            const label = document.getElementById('fileLabel2');
+            label.textContent = input.files[0] ? input.files[0].name : 'Choose an audio file';
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const initialUpload = document.getElementById('initialUpload');
+            const loadingDiv = document.getElementById('loading');
+            const resultDiv = document.getElementById('result');
+            const analyzeAnother = document.getElementById('analyzeAnother');
+            
+            // Hide initial upload with fade
+            initialUpload.classList.add('fade-out');
+            
+            // Show loading state
+
+            loadingDiv.style.display = 'block';
+            initialUpload.style.display = 'none';
+            resultDiv.style.display = 'none';
+            analyzeAnother.style.display = 'none';
+            
+            // Simulate analysis with setTimeout
+            setTimeout(() => {
+                // Hide loading state and show result
+                loadingDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+                analyzeAnother.style.display = 'block';
+                initialUpload.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
